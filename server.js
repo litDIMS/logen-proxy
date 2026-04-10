@@ -38,6 +38,16 @@ app.get('/', (req, res) => {
   res.json({ status: 'ok', message: '로젠 API 프록시 서버', env: process.env.LOGEN_ENV || 'dev' });
 });
 
+// ── 아웃바운드 IP 확인 ──
+app.get('/my-ip', async (req, res) => {
+  try {
+    const response = await axios.get('https://api.ipify.org?format=json');
+    res.json({ outbound_ip: response.data.ip });
+  } catch(e) {
+    res.json({ error: e.message });
+  }
+});
+
 // ── 1. 송장번호 채번 ──
 app.post('/getSlipNo', async (req, res) => {
   try {
